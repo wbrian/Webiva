@@ -1,0 +1,60 @@
+
+#facebook_heading {
+  padding: 5px;
+  color: #fff;
+  font-weight: bold;
+  background-color: #627AAD;
+}
+
+#facebook_login {
+  padding: 5px;
+  color: #fff;
+  font-weight: bold;
+  background-color: #627AAD;
+}
+
+#facebook_login a {
+  color: #fff;
+  font-weight: bold;
+}
+
+#facebook_albums {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-width: 0 4px 4px 4px;
+  border-style: solid;
+  border-color: #627AAD;
+}
+
+#facebook_albums table {
+  padding: 5px;
+  background-color: #EDEFF4;
+}
+
+#facebook_albums table td {
+  text-align: center;
+  padding: 2px;
+}
+
+#facebook_albums table td.fb_album_image {
+  vertical-align: middle;
+}
+
+#facebook_albums table td.fb_album_name {
+  vertical-align: top;
+}
+
+#facebook_albums table td.fb_album_name a {
+  vertical-align: top;
+  color: #3B5998;
+}
+
+#facebook_albums td.fb_album_image {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #EDEFF4;
+}
+
+#facebook_albums td.fb_album_image_selected {
+  border-color: #000;
+}

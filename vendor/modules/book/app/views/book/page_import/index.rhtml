@@ -1,0 +1,14 @@
+
+<div class='admin_content'>
+
+<% if @im_error -%>
+  <div class="error" style="padding-bottom:10px;"><%= @im_error %></div>
+<% end -%>
+
+<% admin_form_for :import, nil do |f| %>
+  <%= f.filemanager_file :file, :label => 'CSV Files Only', :vertical => true, :separator => '<br />' %>
+  <%= f.spacer 20 %>
+  <%= f.cancel_submit_buttons 'Cancel', 'Import' %>
+<% end -%>
+
+</div>

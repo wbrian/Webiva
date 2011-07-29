@@ -1,0 +1,117 @@
+
+<style type="text/css">
+
+#wiki_diff {
+    width: 800px;
+    font-family:Verdana;
+    font-size:11px;
+    
+}
+
+.rem {
+    background-color: #F7B0B0;
+    border-bottom: 1px solid #ff7f7f ;
+    text-decoration: line-through;
+    
+    
+  }
+.add {
+    background-color: #ccff99;
+    border-bottom: 1px solid #66FF00;
+    
+    
+  }
+pre {
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+#edit-actions {
+ padding-top: 10px;
+ height: 40px;
+}
+
+</style>
+
+<script>
+
+RevisionDiff = {
+  acceptRevision: function(version_id) {
+    var params = { version_id:version_id };
+    new Ajax.Request('<%= url_for :action => 'accept_wiki_edits', :path => [ @book.id ] %>',
+                     { parameters: params, evalScripts: true,
+                       onComplete: function() {
+                         if(window.opener.ChapterTree) {
+                           window.opener.SCMS.select_tab_num(3);
+                           window.opener.ChapterTree.loadVersionTable(<%= @page.id %>);
+                         } else if(window.opener.UserEdits) {
+                           window.opener.UserEdits.loadVersionTable();
+                         }
+                         window.close();
+                       }
+                     });
+  },
+	  
+  markReviewed: function(version_id) {
+    var params = { version_id:version_id };
+    new Ajax.Request('<%= url_for :action => 'review_wiki_edits', :path => [ @book.id ] %>',
+                     { parameters: params, evalScripts: true,
+                       onComplete: function() {
+                         if(window.opener.ChapterTree) {
+                           window.opener.SCMS.select_tab_num(3);
+                           window.opener.ChapterTree.loadVersionTable(<%= @page.id %>);
+                         } else if(window.opener.UserEdits) {
+                           window.opener.UserEdits.loadVersionTable();
+                         }
+                         window.close();
+                       }
+                     });
+  }
+}
+
+if(window.opener.ChapterTree) {
+  window.opener.SCMS.select_tab_num(1);
+}
+</script>
+
+<div class="active_table_wrapper">
+
+<div id="edit-actions">
+  <% if @vers_body.version_status == 'submitted' -%>
+  <div id="reviewed"><span style='float:right' ><button onclick='RevisionDiff.markReviewed(<%= @vers_body.id %>);  return false;'><%= 'Mark as Reviewed'.t %></button></span></div>
+  <% end -%>
+
+  <div id="live"><span style='float:left;'> <button onclick='RevisionDiff.acceptRevision(<%= @vers_body.id %>); return false;'><%= 'Make Version Live'.t %></button></span></div>
+</div>
+
+
+<% if @no_difference -%>
+<div class="flash_notice"><%= 'No differences with current version'.t %></div>
+<br/>
+<% end -%>
+
+<% ajax_tabs ['Version Comparison',['Submitted Text']],'Version Comparison' do |t| -%>
+
+<% t.tab do -%>
+<div id="wiki_diff">
+  <%= @diff_body %>
+</div>
+<% end -%>
+
+<% t.tab do -%>
+<div id="wiki_diff">
+<pre>
+<code>
+  <% form_for 'diff_body' do |f| %>
+  <%= text_area_tag :description, @vers_body.body, :cols => 85, :rows => 34, :readonly => 'readonly' %>
+  <% end %>
+</code>
+</pre>
+</div>
+<% end -%>
+
+<% end -%>
+
+</div>
